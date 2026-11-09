@@ -1,51 +1,69 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>STEPH-CORP TICKETS</title>
+<title>Mélanie & Nathanaël - Gala des noces</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 body {
-  background:#101827;
-  color:white;
-  font-family:Arial;
-  text-align:center;
+  margin:0;
   padding:20px;
+  background:#38251d;
+  color:#fff;
+  font-family:Georgia,serif;
+  text-align:center;
 }
-h1 {color:#d9ad60;}
+h1 {color:#e9a05c;letter-spacing:2px;}
 input {
   display:block;
   width:90%;
   max-width:350px;
   padding:14px;
-  margin:12px auto;
-  border-radius:7px;
-  border:0;
+  margin:15px auto;
+  border:1px solid #d99a62;
+  border-radius:6px;
+  box-sizing:border-box;
 }
 button {
-  background:#d9ad60;
-  color:#101827;
-  border:0;
   padding:14px 22px;
-  border-radius:7px;
+  background:#d98b4d;
+  color:#291b14;
+  border:0;
+  border-radius:6px;
   font-weight:bold;
-  margin:10px;
+  margin:12px;
 }
 #ticket {
-  background:white;
-  color:#17243a;
-  max-width:350px;
-  margin:25px auto;
-  padding:22px;
-  border-radius:12px;
   display:none;
+  max-width:420px;
+  margin:25px auto;
+  padding:25px 20px;
+  background:#f8ead8;
+  color:#493126;
+  border:5px double #b87945;
+  border-radius:12px;
+}
+#ticket h1 {color:#8b512f;}
+#ticket h2 {color:#9b603a;}
+.invitation {
+  line-height:1.7;
+  font-size:15px;
 }
 #qrcode {
   display:flex;
   justify-content:center;
-  margin:20px;
+  margin:20px auto;
+}
+.small {font-size:12px;}
+@media print {
+  body {background:white;color:black;padding:0;}
+  body > h1, body > p, body > h2,
+  body > input, body > button {display:none!important;}
+  #ticket {display:block!important;margin:0 auto;}
+  #ticket button {display:none;}
 }
 </style>
 </head>
@@ -53,46 +71,68 @@ button {
 
 <h1>STEPH-CORP TICKETS</h1>
 <p>LA VOIE DE LA RÉUSSITE</p>
-<h2>Générateur de billets numériques</h2>
+
+<h2>Billetterie officielle</h2>
+<p>Gala des noces de Mélanie & Nathanaël</p>
 
 <input id="guest" placeholder="Nom complet de l'invité">
-<input id="event" placeholder="Nom de l'événement">
 
-<button onclick="generateTicket()">GÉNÉRER LE BILLET</button>
+<button onclick="generateTicket()">
+GÉNÉRER MON BILLET
+</button>
 
 <div id="ticket">
-  <h2>STEPH-CORP TICKETS</h2>
-  <h3 id="eventName"></h3>
-  <p>INVITÉ :</p>
+  <p class="small">INVITATION OFFICIELLE</p>
+  <h1>MÉLANIE & NATHANAËL</h1>
+  <h2>GALA DES NOCES</h2>
+
+  <p class="invitation">
+  À l'occasion de la célébration de leur mariage civil,
+  qui aura lieu le samedi 28 novembre 2026,
+  Mélanie et Nathanaël ont la joie et l'honneur
+  de vous convier à leur gala des noces.
+
+  Ils seraient particulièrement heureux de partager
+  avec vous ces précieux instants de bonheur,
+  de convivialité et de réjouissance.
+  </p>
+
+  <p><strong>DATE :</strong> Samedi 28 novembre 2026</p>
+  <p><strong>HEURE :</strong> Dès 17 heures</p>
+  <p><strong>LIEU :</strong> 107, Station de pompage, Nyom 2</p>
+
+  <hr>
+  <p>INVITÉ(E)</p>
   <h2 id="guestName"></h2>
-  <p id="ticketNumber"></p>
+  <p id="ticketNumber" class="small"></p>
   <div id="qrcode"></div>
-  <p>PRÉSENTEZ CE BILLET À L'ENTRÉE</p>
-  <button onclick="window.print()">IMPRIMER</button>
+  <p class="small">
+  Votre présence donnera à cette célébration tout son éclat.
+  </p>
+  <button onclick="window.print()">IMPRIMER LE BILLET</button>
 </div>
 
 <script>
 function generateTicket() {
   const guest = document.getElementById("guest").value.trim();
-  const event = document.getElementById("event").value.trim();
 
-  if (!guest || !event) {
-    alert("Veuillez remplir les deux champs.");
+  if (!guest) {
+    alert("Veuillez saisir le nom de l'invité.");
     return;
   }
 
   const id = "SCT-" + crypto.randomUUID();
 
   document.getElementById("guestName").textContent = guest;
-  document.getElementById("eventName").textContent = event;
-  document.getElementById("ticketNumber").textContent = "N° " + id;
+  document.getElementById("ticketNumber").textContent =
+    "NUMÉRO DU BILLET : " + id;
 
   document.getElementById("qrcode").innerHTML = "";
 
   new QRCode(document.getElementById("qrcode"), {
     text: id,
-    width: 160,
-    height: 160
+    width: 150,
+    height: 150
   });
 
   document.getElementById("ticket").style.display = "block";
