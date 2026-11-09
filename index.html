@@ -1,43 +1,103 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>STEPH-CORP TICKETS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #101827;
-  color: white;
-  text-align: center;
+  background:#101827;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
 }
-header {
-  padding: 35px 15px;
-  background: #17243a;
+h1 {color:#d9ad60;}
+input {
+  display:block;
+  width:90%;
+  max-width:350px;
+  padding:14px;
+  margin:12px auto;
+  border-radius:7px;
+  border:0;
 }
-h1 { color: #d9ad60; }
-main { padding: 35px 15px; }
 button {
-  background: #d9ad60;
-  color: #101827;
-  border: 0;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 16px;
+  background:#d9ad60;
+  color:#101827;
+  border:0;
+  padding:14px 22px;
+  border-radius:7px;
+  font-weight:bold;
+  margin:10px;
+}
+#ticket {
+  background:white;
+  color:#17243a;
+  max-width:350px;
+  margin:25px auto;
+  padding:22px;
+  border-radius:12px;
+  display:none;
+}
+#qrcode {
+  display:flex;
+  justify-content:center;
+  margin:20px;
 }
 </style>
 </head>
 <body>
-<header>
+
 <h1>STEPH-CORP TICKETS</h1>
 <p>LA VOIE DE LA RÉUSSITE</p>
-</header>
-<main>
-<h2>Bienvenue sur notre billetterie numérique</h2>
-<p>Créez, gérez et vérifiez vos billets électroniques.</p>
-<button>Accéder à la billetterie</button>
-</main>
+<h2>Générateur de billets numériques</h2>
+
+<input id="guest" placeholder="Nom complet de l'invité">
+<input id="event" placeholder="Nom de l'événement">
+
+<button onclick="generateTicket()">GÉNÉRER LE BILLET</button>
+
+<div id="ticket">
+  <h2>STEPH-CORP TICKETS</h2>
+  <h3 id="eventName"></h3>
+  <p>INVITÉ :</p>
+  <h2 id="guestName"></h2>
+  <p id="ticketNumber"></p>
+  <div id="qrcode"></div>
+  <p>PRÉSENTEZ CE BILLET À L'ENTRÉE</p>
+  <button onclick="window.print()">IMPRIMER</button>
+</div>
+
+<script>
+function generateTicket() {
+  const guest = document.getElementById("guest").value.trim();
+  const event = document.getElementById("event").value.trim();
+
+  if (!guest || !event) {
+    alert("Veuillez remplir les deux champs.");
+    return;
+  }
+
+  const id = "SCT-" + crypto.randomUUID();
+
+  document.getElementById("guestName").textContent = guest;
+  document.getElementById("eventName").textContent = event;
+  document.getElementById("ticketNumber").textContent = "N° " + id;
+
+  document.getElementById("qrcode").innerHTML = "";
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: id,
+    width: 160,
+    height: 160
+  });
+
+  document.getElementById("ticket").style.display = "block";
+}
+</script>
+
 </body>
 </html>
