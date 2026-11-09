@@ -1,40 +1,105 @@
-
-
-
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STEPH-CORP TICKETS - Mélanie & Nathanaël</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#24150f;color:#f8e7c4;font-family:Georgia,serif}
+
+body{
+ margin:0;padding:18px;
+ background:#24150f;
+ color:#f8e7c4;
+ font-family:Georgia,serif
+}
+
 h1{text-align:center;color:#e5bd72;letter-spacing:2px}
 .subtitle{text-align:center;color:#d9bd91}
-.generator{max-width:500px;margin:25px auto;padding:22px;background:#3a241a;border:1px solid #c49a55;border-radius:12px}
+
+.generator,.scanner{
+ max-width:500px;margin:25px auto;padding:22px;
+ background:#3a241a;border:1px solid #c49a55;
+ border-radius:12px
+}
+
 label{display:block;margin:14px 0 6px;color:#e9c77f}
-input{width:100%;padding:13px;border-radius:6px;border:1px solid #bd9555;background:#fff9ee;font-size:16px}
-button{width:100%;padding:14px;margin-top:16px;background:#c69a50;color:#24150f;border:0;border-radius:6px;font-weight:bold;font-size:16px}
-.ticket{display:none;max-width:760px;margin:30px auto;background:#f6e8ca;color:#432719;border:5px double #a87932;padding:22px}
+
+input{
+ width:100%;padding:13px;border-radius:6px;
+ border:1px solid #bd9555;background:#fff9ee;
+ font-size:16px
+}
+
+button{
+ width:100%;padding:14px;margin-top:12px;
+ background:#c69a50;color:#24150f;border:0;
+ border-radius:6px;font-weight:bold;font-size:15px;
+ cursor:pointer
+}
+
+button.secondary{background:#765039;color:white}
+button.whatsapp{background:#168c50;color:white}
+button.danger{background:#a43e32;color:white}
+
+.ticket{
+ display:none;max-width:760px;margin:30px auto;
+ background:#f6e8ca;color:#432719;
+ border:5px double #a87932;padding:22px
+}
+
 .ticket h2{text-align:center;color:#805020;font-size:28px}
 .names{text-align:center;font-size:25px;color:#75451f}
+
 .invitation{text-align:center;line-height:1.7}
+
 .details{text-align:center;font-weight:bold;line-height:1.9}
-.photo{display:block;max-width:100%;max-height:240px;object-fit:contain;margin:15px auto;border:3px solid #bd9452}
+
+.photo{
+ display:block;max-width:100%;max-height:240px;
+ object-fit:contain;margin:15px auto;
+ border:3px solid #bd9452
+}
+
 .table-info{text-align:center;font-size:20px;font-weight:bold}
+
 .footer{text-align:center;font-size:13px;color:#79552e}
+
 .qr-area{text-align:center;margin-top:20px}
 #qrcode{display:inline-block;padding:8px;background:white}
+
 .number{text-align:center;font-size:12px;margin-top:8px}
+
+#reader{
+ width:100%;margin:15px auto;
+ background:white;color:#24150f
+}
+
+#scanResult{
+ text-align:center;padding:12px;margin-top:12px;
+ background:#24150f;border-radius:6px;
+ line-height:1.6
+}
+
 @media print{
  body{background:white;padding:0}
- h1,.subtitle,.generator{display:none!important}
- .ticket{display:block!important;margin:0 auto;max-width:100%;break-inside:avoid}
+ h1,.subtitle,.generator,.scanner,.ticket-actions{
+  display:none!important
+ }
+ .ticket{
+  display:block!important;margin:0 auto;
+  max-width:100%;break-inside:avoid
+ }
 }
 </style>
 </head>
+
 <body>
 
 <h1>STEPH-CORP TICKETS</h1>
@@ -56,11 +121,15 @@ button{width:100%;padding:14px;margin-top:16px;background:#c69a50;color:#24150f;
 </div>
 
 <div class="ticket" id="ticket">
+
 <p class="footer">STEPH-CORP ENTERTAINMENT PRÉSENTE</p>
+
 <h2>GALA DES NOCES</h2>
+
 <div class="names">Mélanie & Nathanaël</div>
 
-<img id="couplePhoto" class="photo" alt="Photo des mariés" style="display:none">
+<img id="couplePhoto" class="photo"
+ alt="Photo des mariés" style="display:none">
 
 <p class="invitation">
 À l'occasion de la célébration de leur mariage civil,
@@ -85,29 +154,87 @@ une délicate contribution en espèces sera appréciée avec gratitude.
 
 <p style="text-align:center">INVITATION PERSONNELLE</p>
 <p style="text-align:center">INVITÉ(E) :</p>
+
 <div class="names" id="guestName"></div>
 <div class="table-info" id="tableName"></div>
 
 <div class="qr-area">
 <div id="qrcode"></div>
 </div>
+
 <div class="number" id="ticketNumber"></div>
 
 <p class="footer">STEPH-CORP TICKETS — CONTRÔLE D'ACCÈS</p>
+
+</div>
+
+<div class="ticket-actions" id="ticketActions"
+ style="display:none;max-width:500px;margin:auto">
+
+<button class="whatsapp" onclick="shareTicket()">
+ENVOYER LE BILLET SUR WHATSAPP
+</button>
+
+<button class="secondary" onclick="window.print()">
+IMPRIMER LE BILLET
+</button>
+
+</div>
+
+<div class="scanner">
+<h2>CONTRÔLE DES ENTRÉES</h2>
+
+<p>Scannez le QR code présenté par l'invité.</p>
+
+<button onclick="startScanner()">OUVRIR LE SCANNER QR</button>
+
+<button class="secondary" onclick="stopScanner()">
+FERMER LE SCANNER
+</button>
+
+<div id="reader"></div>
+
+<div id="scanResult">
+En attente d'un scan...
+</div>
+
 </div>
 
 <script>
+
 let photoData = "";
+let currentTicket = "";
+let scanner = null;
+let scannerRunning = false;
+
+function getTickets(){
+ try{
+  return JSON.parse(localStorage.getItem("STEPH_CORP_TICKETS") || "{}");
+ }catch(e){
+  return {};
+ }
+}
+
+function saveTickets(tickets){
+ localStorage.setItem("STEPH_CORP_TICKETS",JSON.stringify(tickets));
+}
 
 document.getElementById("photoInput").addEventListener("change",function(e){
+
  const file=e.target.files[0];
  if(!file)return;
+
  const reader=new FileReader();
- reader.onload=function(){photoData=reader.result};
+
+ reader.onload=function(){
+  photoData=reader.result;
+ };
+
  reader.readAsDataURL(file);
 });
 
 function generateTicket(){
+
  const guest=document.getElementById("guest").value.trim();
  const table=document.getElementById("table").value.trim();
 
@@ -121,13 +248,18 @@ function generateTicket(){
   return;
  }
 
- const id="SCT-"+crypto.randomUUID();
+ const id="SCT-"+(crypto.randomUUID ?
+ crypto.randomUUID() :
+ Date.now()+"-"+Math.random().toString(36).slice(2));
+
+ currentTicket=id;
 
  document.getElementById("guestName").textContent=guest;
  document.getElementById("tableName").textContent="TABLE : "+table;
  document.getElementById("ticketNumber").textContent="BILLET N° "+id;
 
  const photo=document.getElementById("couplePhoto");
+
  if(photoData){
   photo.src=photoData;
   photo.style.display="block";
@@ -136,6 +268,7 @@ function generateTicket(){
  }
 
  document.getElementById("qrcode").innerHTML="";
+
  new QRCode(document.getElementById("qrcode"),{
   text:id,
   width:150,
@@ -143,9 +276,203 @@ function generateTicket(){
   correctLevel:QRCode.CorrectLevel.H
  });
 
+ const tickets=getTickets();
+
+ tickets[id]={
+  guest:guest,
+  table:table,
+  used:false,
+  created:new Date().toISOString()
+ };
+
+ saveTickets(tickets);
+
  document.getElementById("ticket").style.display="block";
+ document.getElementById("ticketActions").style.display="block";
+
+ document.getElementById("ticket").scrollIntoView({
+  behavior:"smooth"
+ });
 }
+
+async function shareTicket(){
+
+ const ticket=document.getElementById("ticket");
+
+ if(!currentTicket){
+  alert("Générez d'abord un billet.");
+  return;
+ }
+
+ if(typeof html2canvas==="undefined"){
+  alert("Le service de création d'image n'est pas chargé.");
+  return;
+ }
+
+ try{
+
+  const canvas=await html2canvas(ticket,{
+   scale:2,
+   backgroundColor:"#f6e8ca"
+  });
+
+  canvas.toBlob(async function(blob){
+
+   if(!blob){
+    alert("Impossible de créer l'image du billet.");
+    return;
+   }
+
+   const file=new File(
+    [blob],
+    "Billet-STEPH-CORP.png",
+    {type:"image/png"}
+   );
+
+   const message=
+   "Bonjour ! Voici votre invitation personnelle au gala des noces de Mélanie et Nathanaël, le 28 novembre 2026. Présentez votre QR code à l'entrée.";
+
+   if(navigator.canShare && navigator.canShare({files:[file]})){
+
+    try{
+     await navigator.share({
+      files:[file],
+      title:"Billet Mélanie et Nathanaël",
+      text:message
+     });
+    }catch(error){
+     if(error.name!=="AbortError"){
+      alert("Le partage a été interrompu. Vous pouvez télécharger le billet.");
+     }
+    }
+
+   }else{
+
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+
+    link.href=url;
+    link.download="Billet-STEPH-CORP.png";
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    window.open(
+     "https://wa.me/?text="+encodeURIComponent(message),
+     "_blank"
+    );
+
+    alert("Billet téléchargé. Joignez son image dans WhatsApp.");
+
+   }
+
+  },"image/png");
+
+ }catch(error){
+  alert("Erreur lors de la création du billet.");
+ }
+
+}
+
+async function startScanner(){
+
+ if(!window.Html5Qrcode){
+  alert("Le scanner QR n'est pas chargé. Vérifiez votre connexion.");
+  return;
+ }
+
+ if(scannerRunning)return;
+
+ scanner=new Html5Qrcode("reader");
+
+ document.getElementById("scanResult").textContent=
+ "Ouverture de la caméra...";
+
+ try{
+
+  await scanner.start(
+   {facingMode:"environment"},
+   {fps:10,qrbox:{width:230,height:230}},
+   function(decodedText){
+
+    checkTicket(decodedText);
+
+    stopScanner();
+
+   },
+   function(){}
+  );
+
+  scannerRunning=true;
+
+ }catch(error){
+
+  document.getElementById("scanResult").textContent=
+  "Impossible d'ouvrir la caméra. Autorisez son accès et utilisez le site en HTTPS.";
+
+ }
+
+}
+
+async function stopScanner(){
+
+ if(scanner && scannerRunning){
+
+  try{
+   await scanner.stop();
+   scanner.clear();
+  }catch(e){}
+
+  scannerRunning=false;
+ }
+
+}
+
+function checkTicket(id){
+
+ const tickets=getTickets();
+ const result=document.getElementById("scanResult");
+
+ if(!tickets[id]){
+
+  result.innerHTML=
+  "<strong> BILLET INCONNU </strong><br>Ce billet n'est pas enregistré sur cet appareil.";
+  result.style.color="#ff7777";
+  return;
+
+ }
+
+ const ticket=tickets[id];
+
+ if(ticket.used){
+
+  result.innerHTML=
+  "<strong> BILLET DÉJÀ UTILISÉ </strong><br>"+
+  "Invité : "+ticket.guest+
+  "<br>Table : "+ticket.table;
+  result.style.color="#ff7777";
+  return;
+
+ }
+
+ ticket.used=true;
+ ticket.entryDate=new Date().toISOString();
+
+ tickets[id]=ticket;
+ saveTickets(tickets);
+
+ result.innerHTML=
+ "<strong> ENTRÉE AUTORISÉE </strong><br>"+
+ "Invité : "+ticket.guest+
+ "<br>Table : "+ticket.table+
+ "<br>Billet validé avec succès.";
+
+ result.style.color="#7dff9b";
+
+}
+
 </script>
 
 </body>
 </html>
+```
