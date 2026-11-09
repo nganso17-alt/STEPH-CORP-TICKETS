@@ -1,141 +1,149 @@
 
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mélanie & Nathanaël - Gala des noces</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEPH-CORP TICKETS - Mélanie & Nathanaël</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-body {
-  margin:0;
-  padding:20px;
-  background:#38251d;
-  color:#fff;
-  font-family:Georgia,serif;
-  text-align:center;
-}
-h1 {color:#e9a05c;letter-spacing:2px;}
-input {
-  display:block;
-  width:90%;
-  max-width:350px;
-  padding:14px;
-  margin:15px auto;
-  border:1px solid #d99a62;
-  border-radius:6px;
-  box-sizing:border-box;
-}
-button {
-  padding:14px 22px;
-  background:#d98b4d;
-  color:#291b14;
-  border:0;
-  border-radius:6px;
-  font-weight:bold;
-  margin:12px;
-}
-#ticket {
-  display:none;
-  max-width:420px;
-  margin:25px auto;
-  padding:25px 20px;
-  background:#f8ead8;
-  color:#493126;
-  border:5px double #b87945;
-  border-radius:12px;
-}
-#ticket h1 {color:#8b512f;}
-#ticket h2 {color:#9b603a;}
-.invitation {
-  line-height:1.7;
-  font-size:15px;
-}
-#qrcode {
-  display:flex;
-  justify-content:center;
-  margin:20px auto;
-}
-.small {font-size:12px;}
-@media print {
-  body {background:white;color:black;padding:0;}
-  body > h1, body > p, body > h2,
-  body > input, body > button {display:none!important;}
-  #ticket {display:block!important;margin:0 auto;}
-  #ticket button {display:none;}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#24150f;color:#f8e7c4;font-family:Georgia,serif}
+h1{text-align:center;color:#e5bd72;letter-spacing:2px}
+.subtitle{text-align:center;color:#d9bd91}
+.generator{max-width:500px;margin:25px auto;padding:22px;background:#3a241a;border:1px solid #c49a55;border-radius:12px}
+label{display:block;margin:14px 0 6px;color:#e9c77f}
+input{width:100%;padding:13px;border-radius:6px;border:1px solid #bd9555;background:#fff9ee;font-size:16px}
+button{width:100%;padding:14px;margin-top:16px;background:#c69a50;color:#24150f;border:0;border-radius:6px;font-weight:bold;font-size:16px}
+.ticket{display:none;max-width:760px;margin:30px auto;background:#f6e8ca;color:#432719;border:5px double #a87932;padding:22px}
+.ticket h2{text-align:center;color:#805020;font-size:28px}
+.names{text-align:center;font-size:25px;color:#75451f}
+.invitation{text-align:center;line-height:1.7}
+.details{text-align:center;font-weight:bold;line-height:1.9}
+.photo{display:block;max-width:100%;max-height:240px;object-fit:contain;margin:15px auto;border:3px solid #bd9452}
+.table-info{text-align:center;font-size:20px;font-weight:bold}
+.footer{text-align:center;font-size:13px;color:#79552e}
+.qr-area{text-align:center;margin-top:20px}
+#qrcode{display:inline-block;padding:8px;background:white}
+.number{text-align:center;font-size:12px;margin-top:8px}
+@media print{
+ body{background:white;padding:0}
+ h1,.subtitle,.generator{display:none!important}
+ .ticket{display:block!important;margin:0 auto;max-width:100%;break-inside:avoid}
 }
 </style>
 </head>
 <body>
 
 <h1>STEPH-CORP TICKETS</h1>
-<p>LA VOIE DE LA RÉUSSITE</p>
+<p class="subtitle">LA VOIE DE LA RÉUSSITE</p>
 
-<h2>Billetterie officielle</h2>
-<p>Gala des noces de Mélanie & Nathanaël</p>
+<div class="generator">
+<h2>Générateur de billets</h2>
 
-<input id="guest" placeholder="Nom complet de l'invité">
+<label>Nom complet de l'invité</label>
+<input id="guest" placeholder="Nom et prénom">
 
-<button onclick="generateTicket()">
-GÉNÉRER MON BILLET
-</button>
+<label>Nom ou numéro de table</label>
+<input id="table" placeholder="Exemple : Table 05">
 
-<div id="ticket">
-  <p class="small">INVITATION OFFICIELLE</p>
-  <h1>MÉLANIE & NATHANAËL</h1>
-  <h2>GALA DES NOCES</h2>
+<label>Photo de Mélanie et Nathanaël</label>
+<input id="photoInput" type="file" accept="image/*">
 
-  <p class="invitation">
-  À l'occasion de la célébration de leur mariage civil,
-  qui aura lieu le samedi 28 novembre 2026,
-  Mélanie et Nathanaël ont la joie et l'honneur
-  de vous convier à leur gala des noces.
+<button onclick="generateTicket()">GÉNÉRER LE BILLET</button>
+</div>
 
-  Ils seraient particulièrement heureux de partager
-  avec vous ces précieux instants de bonheur,
-  de convivialité et de réjouissance.
-  </p>
+<div class="ticket" id="ticket">
+<p class="footer">STEPH-CORP ENTERTAINMENT PRÉSENTE</p>
+<h2>GALA DES NOCES</h2>
+<div class="names">Mélanie & Nathanaël</div>
 
-  <p><strong>DATE :</strong> Samedi 28 novembre 2026</p>
-  <p><strong>HEURE :</strong> Dès 17 heures</p>
-  <p><strong>LIEU :</strong> 107, Station de pompage, Nyom 2</p>
+<img id="couplePhoto" class="photo" alt="Photo des mariés" style="display:none">
 
-  <hr>
-  <p>INVITÉ(E)</p>
-  <h2 id="guestName"></h2>
-  <p id="ticketNumber" class="small"></p>
-  <div id="qrcode"></div>
-  <p class="small">
-  Votre présence donnera à cette célébration tout son éclat.
-  </p>
-  <button onclick="window.print()">IMPRIMER LE BILLET</button>
+<p class="invitation">
+À l'occasion de la célébration de leur mariage civil,
+qui aura lieu le samedi 28 novembre 2026,
+Mélanie et Nathanaël ont la joie et l'honneur
+de vous convier à leur gala des noces.
+</p>
+
+<div class="details">
+SAMEDI 28 NOVEMBRE 2026<br>
+17 HEURES<br>
+107, STATION DE POMPAGE, NYOM 2
+</div>
+
+<p class="invitation">
+<strong>VOTRE PRÉSENCE, NOTRE PLUS BEAU CADEAU</strong><br>
+Pour ceux qui désirent aller au-delà de leur présence,
+une délicate contribution en espèces sera appréciée avec gratitude.
+</p>
+
+<hr style="border:1px solid #b78a47">
+
+<p style="text-align:center">INVITATION PERSONNELLE</p>
+<p style="text-align:center">INVITÉ(E) :</p>
+<div class="names" id="guestName"></div>
+<div class="table-info" id="tableName"></div>
+
+<div class="qr-area">
+<div id="qrcode"></div>
+</div>
+<div class="number" id="ticketNumber"></div>
+
+<p class="footer">STEPH-CORP TICKETS — CONTRÔLE D'ACCÈS</p>
 </div>
 
 <script>
-function generateTicket() {
-  const guest = document.getElementById("guest").value.trim();
+let photoData = "";
 
-  if (!guest) {
-    alert("Veuillez saisir le nom de l'invité.");
-    return;
-  }
+document.getElementById("photoInput").addEventListener("change",function(e){
+ const file=e.target.files[0];
+ if(!file)return;
+ const reader=new FileReader();
+ reader.onload=function(){photoData=reader.result};
+ reader.readAsDataURL(file);
+});
 
-  const id = "SCT-" + crypto.randomUUID();
+function generateTicket(){
+ const guest=document.getElementById("guest").value.trim();
+ const table=document.getElementById("table").value.trim();
 
-  document.getElementById("guestName").textContent = guest;
-  document.getElementById("ticketNumber").textContent =
-    "NUMÉRO DU BILLET : " + id;
+ if(!guest||!table){
+  alert("Veuillez renseigner le nom de l'invité et sa table.");
+  return;
+ }
 
-  document.getElementById("qrcode").innerHTML = "";
+ if(typeof QRCode==="undefined"){
+  alert("Le générateur QR n'est pas chargé. Vérifiez votre connexion.");
+  return;
+ }
 
-  new QRCode(document.getElementById("qrcode"), {
-    text: id,
-    width: 150,
-    height: 150
-  });
+ const id="SCT-"+crypto.randomUUID();
 
-  document.getElementById("ticket").style.display = "block";
+ document.getElementById("guestName").textContent=guest;
+ document.getElementById("tableName").textContent="TABLE : "+table;
+ document.getElementById("ticketNumber").textContent="BILLET N° "+id;
+
+ const photo=document.getElementById("couplePhoto");
+ if(photoData){
+  photo.src=photoData;
+  photo.style.display="block";
+ }else{
+  photo.style.display="none";
+ }
+
+ document.getElementById("qrcode").innerHTML="";
+ new QRCode(document.getElementById("qrcode"),{
+  text:id,
+  width:150,
+  height:150,
+  correctLevel:QRCode.CorrectLevel.H
+ });
+
+ document.getElementById("ticket").style.display="block";
 }
 </script>
 
